@@ -8,12 +8,12 @@ using System.Drawing;
 using System.Threading;
 using System.Drawing.Imaging;
 
-using Accord;
-using Accord.Video;
-using Accord.Video.DirectShow;
-using Accord.Imaging;
-using Accord.Imaging.Filters;
-using Accord.Math.Geometry;
+using AForge;
+using AForge.Video;
+using AForge.Video.DirectShow;
+using AForge.Imaging;
+using AForge.Imaging.Filters;
+using AForge.Math.Geometry;
 
 
 
@@ -290,7 +290,7 @@ namespace LitePlacer
 
 
         // ==========================================================================================================
-        // Video processing and measurements are done by appying Accord functions one by one to a videoframe.
+        // Video processing and measurements are done by appying AForge functions one by one to a videoframe.
         // To do this, lists of functions are maintained.
         // ==========================================================================================================
         // The list of functions processing the image used in measurements:
@@ -684,7 +684,7 @@ namespace LitePlacer
 
 
         // =========================================================
-        // Convert list of Accord.NET's points to array of .NET points
+        // Convert list of AForge.NET's points to array of .NET points
         private System.Drawing.Point[] ToPointsArray(List<IntPoint> points)
         {
             System.Drawing.Point[] array = new System.Drawing.Point[points.Count];
@@ -1075,11 +1075,11 @@ namespace LitePlacer
                     }
                 }
                 // Get the center point of it
-                Accord.Point LongestCenter = new Accord.Point();
+                AForge.Point LongestCenter = new AForge.Point();
                 LongestCenter.X = (float)Math.Round((Longest.End.X - Longest.Start.X) / 2.0 + Longest.Start.X);
                 LongestCenter.Y = (float)Math.Round((Longest.End.Y - Longest.Start.Y) / 2.0 + Longest.Start.Y);
-                Accord.Point NormalStart = new Accord.Point();
-                Accord.Point NormalEnd = new Accord.Point();
+                AForge.Point NormalStart = new AForge.Point();
+                AForge.Point NormalEnd = new AForge.Point();
                 // Find normal: 
                 // start= longest.start rotated +90deg relative to center
                 // end= longest.end rotated -90deg and relative to center
@@ -1099,8 +1099,8 @@ namespace LitePlacer
                 Line Normal = Line.FromPoints(NormalStart, NormalEnd);
 
                 // Find the furthest intersection to the normal (skip the Longest)
-                Accord.Point InterSection = new Accord.Point();
-                Accord.Point Furthest = new Accord.Point();
+                AForge.Point InterSection = new AForge.Point();
+                AForge.Point Furthest = new AForge.Point();
                 bool FurhtestAssinged = false;
                 LineSegment seg;
                 dist = 0;
@@ -1127,7 +1127,7 @@ namespace LitePlacer
                     {
                         continue;
                     }
-                    InterSection = (Accord.Point)seg.GetIntersectionWith(Normal);
+                    InterSection = (AForge.Point)seg.GetIntersectionWith(Normal);
                     if (InterSection.DistanceTo(LongestCenter) > dist)
                     {
                         Furthest = InterSection;
@@ -1136,7 +1136,7 @@ namespace LitePlacer
                     }
                 }
                 // Check, if there is a edge point that is close to the normal even further
-                Accord.Point fPoint = new Accord.Point();
+                AForge.Point fPoint = new AForge.Point();
                 for (int i = 0; i < Outline.Count; i++)
                 {
                     fPoint.X = Outline[i].X;
@@ -1151,7 +1151,7 @@ namespace LitePlacer
                         }
                     }
                 }
-                Accord.Point ComponentCenter = new Accord.Point();
+                AForge.Point ComponentCenter = new AForge.Point();
                 if (FurhtestAssinged)
                 {
                     // Find the midpoint of LongestCenter and Furthest: This is the centerpoint of component
@@ -1317,7 +1317,7 @@ namespace LitePlacer
             {
                 SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
                 List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
-                Accord.Point center;
+                AForge.Point center;
                 float radius;
 
                 // is circle ?
@@ -1560,14 +1560,14 @@ namespace LitePlacer
                         float y0 = corners[0].Y;
                         float x2 = corners[2].X;
                         float y2 = corners[2].Y;
-                        Accord.Point C = new Accord.Point();
+                        AForge.Point C = new AForge.Point();
                         C.X = (float)(((x2 - x0) / 2.0) + x0);
                         C.Y = (float)(((y2 - y0) / 2.0) + y0);
 
-                        Accord.Point a1 = corners[0];
-                        Accord.Point a2 = corners[1];
-                        Accord.Point b1 = corners[0];
-                        Accord.Point b2 = corners[1];
+                        AForge.Point a1 = corners[0];
+                        AForge.Point a2 = corners[1];
+                        AForge.Point b1 = corners[0];
+                        AForge.Point b2 = corners[1];
                         b2.Y = b1.Y;
                         float angle = GeometryTools.GetAngleBetweenLines(a1, a2, b1, b2);
 
